@@ -43,6 +43,20 @@
       margin: 20px 0;
       border-radius: 8px;
     }
+    .redirect-button {
+      padding: 12px 24px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+    .redirect-button:hover {
+      background-color: #3367d6;
+    }
   </style>
 </head>
 <body>
@@ -52,6 +66,14 @@
     <p>This demonstrates how you can create an immersive experience without using the actual fullscreen API, while still maintaining control over the parent page's appearance.</p>
     <img src="https://picsum.photos/800/400" alt="Random placeholder image">
     <p>You can close this overlay by clicking the X button in the top-right corner.</p>
+    <button class="redirect-button" onclick="redirectParent()">Redirect Parent Window</button>
   </div>
+
+  <script>
+    function redirectParent() {
+      // Change the URL to the desired redirect destination
+      window.parent.location.href = 'https://sport5.co.il';
+    }
+  </script>
 </body>
 </html> 
