@@ -1,16 +1,10 @@
-const https = require('https');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-const HTTPS_PORT = process.env.PORT || 3000;
+const HTTP_PORT = process.env.PORT || 3000;
 
-// HTTPS options with SSL certificates
-const options = {
-  key: fs.readFileSync('./src/local-certification/key.pem'),
-  cert: fs.readFileSync('./src/local-certification/cert.pem')
-};
 
 // Common request handler for both HTTP and HTTPS
 const requestHandler = (req, res) => {
@@ -19,6 +13,8 @@ const requestHandler = (req, res) => {
   
   // Get the file path from pathname only
   let filePath = '.' + parsedUrl.pathname;
+  
+  
   if (filePath === './') {
     filePath = './src/html/home-page-example.html';
   }
@@ -80,9 +76,21 @@ const requestHandler = (req, res) => {
 };
 
 // Create HTTPS server
-const httpsServer = https.createServer(options, requestHandler);
+const httpServer = http.createServer(requestHandler);
+
+// Disable timeout (unlimited)
+httpServer.setTimeout(0); 
 
 // Start both servers
-httpsServer.listen(HTTPS_PORT, () => {
-  console.log(`HTTPS Server running at https://localhost:${HTTPS_PORT}/`);
+httpServer.listen(HTTP_PORT, () => {
+  console.log(`HTTPS Server running at http://localhost:${HTTP_PORT}/`);
+});
+
+// Add error handling for the HTTPS server
+httpServer.on('error', (error) => {
+  console.error(`Failed to start HTTPS server: ${error.message}`);
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${HTTP_PORT} is already in use`);
+  }
+  process.exit(1);
 });
