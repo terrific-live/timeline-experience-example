@@ -67,7 +67,7 @@ configuration.
 
 ## Additional Notes
 - used timeline in the example is taken from the [store provided to your content editors from our staging environment](https://staging.terrific.live/reshet13/manage/assets-library?timelineId=5VKPd0aAyy98dI5j6o4Z)
-- redirect link is taken from the timeline settings on our platform, which agreed to be populated by your content editors. We will always take the last one as the one to use in the redirect link.
+- redirect link of the home page carousel click is taken from the timeline settings on our platform, which agreed to be populated by your content editors. We will always take the last one as the one to use in the redirect link.
 
 ## Troubleshooting
 
