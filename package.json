@@ -1,0 +1,8 @@
+{
+  "name": "timeline-example",
+  "description": "Terrific Timeline Integration Example",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+} 

@@ -1,44 +1,38 @@
-# Fake Fullscreen Overlay with Parent Page Blur
+# Terrific Timeline Integration Example
 
-This example demonstrates how to create a "fake fullscreen" effect from an iframe, where:
-1. A launcher iframe triggers a fullscreen overlay
-2. The parent page gets blurred behind the overlay
-3. A second iframe is displayed in the overlay
+This project demonstrates the integration of Terrific Timeline in a webpage with both HTTP and HTTPS support.
 
-## How It Works
+## Setup and Running
 
-The example consists of three HTML files:
+### Prerequisites
 
-- `index.html`: The parent page that hosts the launcher iframe and contains the necessary code to create the fullscreen overlay and blur effect
-- `launcher.html`: The first iframe with a button that triggers the fullscreen effect
-- `fullscreen-content.html`: The content that appears in the fullscreen overlay
+- Node.js installed on your system
+- OpenSSL for certificate generation (comes pre-installed on most Mac and Linux systems)
 
-## How to Use
+### Installation
 
-1. Open `index.html` in your browser
-2. Click the "Go Fullscreen" button inside the launcher iframe
-3. The parent page will blur and the fullscreen content will appear in an overlay
-4. Click the X button in the top-right corner to close the overlay and remove the blur
+1. Clone this repository
+2. Navigate to the project directory
 
-## Technical Details
 
-This example uses the `postMessage` API for cross-frame communication:
+### Running the Server
 
-1. The launcher iframe sends a message to the parent page when the button is clicked
-2. The parent page listens for this message and:
-   - Adds a blur effect to the page
-   - Creates an overlay with a second iframe
-   - Adds a close button that removes the overlay and blur when clicked
+#### HTTPS-only Server
 
-Since browsers isolate iframe contents from their parents for security reasons, this approach requires a small script in the parent page to apply the blur effect and create the overlay.
+```bash
+npm start
+```
 
-## Browser Compatibility
+This will start the (https) server at `https://localhost:3000`
 
-This example works in all modern browsers that support:
-- `postMessage` API
-- CSS filters (for blur effect)
-- ES6 template literals
 
-## License
+### Quick Setup (Generate Certificates and Start Server)
 
-This example is provided under the MIT License. 
+## Browser Security Warning
+
+Since we're using self-signed certificates for local development, your browser will show a security warning. You can:
+
+1. Click "Advanced" or similar option
+2. Choose "Proceed to localhost (unsafe)" or similar option
+
+This is normal for development environments. In production, you should use properly signed certificates.
