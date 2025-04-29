@@ -7,17 +7,18 @@ body {
     margin: 0 auto;
   }
 
-  .terrific-timeline-iframe-container {
-    width: 100%;
-    height: 500px;
-    border: none;
-  }
+.terrific-timeline-iframe-container {
+  width: 100%;
+  height: 500px;
+  border: none;
+}
 
-  .page-header {
+.page-header {
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
     margin-bottom: 20px;
 }
+
 .day-title {
     font-size: 24px;
     font-weight: bold;

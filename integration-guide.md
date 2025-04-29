@@ -25,7 +25,7 @@ sequenceDiagram
 Add our JavaScript file by including this script tag in the `<head>` section of your HTML:
 
 ```html
-<script async src="https://example.com/path/to/integration-script.js"></script>
+<script async src="https://storage.googleapis.com/terrific-deploy.appspot.com/temp/integration-script.js"></script>
 ```
 
 ### 2. integrate the following Iframe code to your HOME PAGE

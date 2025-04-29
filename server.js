@@ -20,10 +20,10 @@ const requestHandler = (req, res) => {
   // Get the file path from pathname only
   let filePath = '.' + parsedUrl.pathname;
   if (filePath === './') {
-    filePath = 'html/home-page-example.html';
+    filePath = './src/html/home-page-example.html';
   }
   if (filePath === './daily-timeline') {
-    filePath = 'html/timeline-day-example.html';
+    filePath = './src/html/timeline-day-example.html';
   }
 
   // Get the file extension
