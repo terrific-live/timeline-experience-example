@@ -57,18 +57,6 @@ Add a the following html code to your DAILY TIMELINE PAGE where you want the ifr
         <!-- Terrific Timeline Day Page Integration end -->
 ```
 
-### 3. Optional: Add Custom Styling
-
-You can style the container as needed:
-
-```css
-.terrific-timeline-iframe-container {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 20px 0;
-}
-```
-
 ## Important Notes
 
 - **Temporary URLs**: The current URLs for both the JavaScript file and iframe source are temporary for testing purposes.
