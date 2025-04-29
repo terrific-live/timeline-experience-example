@@ -2,7 +2,7 @@
 
 This document explains how to integrate the terrific timeline iframe into your website.
 
-## flow sequence diagram
+## Flow Sequence Diagram
 ```mermaid
 sequenceDiagram
     autonumber
