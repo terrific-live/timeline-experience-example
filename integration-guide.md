@@ -33,7 +33,7 @@ Add our JavaScript file by including this script tag in the `<head>` section of 
 Add a the following html code to your HOME PAGE where you want the iframe to appear:
 ```html
 <!-- Terrific Timeline Day Page Integration start -->
-        <div id="terrific-timeline-div" style="width: 100%; height: 500px; border: none;">
+        <div id="terrific-timeline-div">
             <iframe id="terrific-timeline-iframe"
             src="https://terrific-staging-polls.web.app/timeline/carrousel?id=5VKPd0aAyy98dI5j6o4Z&number-of-items=4&is-redirect=true"
             style="width: 100%; height: 100%; border: none;"
@@ -48,7 +48,7 @@ Add a the following html code to your DAILY TIMELINE PAGE where you want the ifr
 
 ```html
 <!-- Terrific Timeline Day Page Integration start -->
-        <div id="terrific-timeline-div" style="width: 100%; height: 500px; border: none;">
+        <div id="terrific-timeline-div">
             <iframe id="terrific-timeline-iframe"
             src="https://terrific-staging-polls.web.app/timeline/carrousel?id=5VKPd0aAyy98dI5j6o4Z&number-of-items=4&is-redirect=false"
             style="width: 100%; height: 100%; border: none;"
