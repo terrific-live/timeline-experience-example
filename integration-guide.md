@@ -57,13 +57,93 @@ Add a the following html code to your DAILY TIMELINE PAGE where you want the ifr
         <!-- Terrific Timeline Day Page Integration end -->
 ```
 
+## Next.js and Mobile App Integration
+
+For applications built with Next.js, follow these steps to integrate the terrific timeline:
+
+### 1. Adding the JavaScript File in Next.js
+
+Add the script to your Next.js application by including it in your `_document.js` or `_app.js` file:
+
+```jsx
+// In pages/_document.js
+import Document, { Html, Head, Main, NextScript } from 'next/document'
+
+class MyDocument extends Document {
+  render() {
+    return (
+      <Html>
+        <Head>
+          <script async src="https://terrific.live/timeline.js" />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
+  }
+}
+
+export default MyDocument
+```
+
+### 2. Integrating the iFrame in Next.js HOME page component
+
+```jsx
+// In your home page component
+export default function HomePage() {
+  return (
+    <div>
+      {/* Other content */}
+      <div id="terrific-timeline-div" style={{ width: '100%', height: '300px' }}>
+        <iframe 
+          id="terrific-timeline-iframe"
+          src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=true"
+          style={{ width: '100%', height: '100%', border: 'none' }}
+          title="Timeline Display"
+        />
+      </div>
+      {/* Other content */}
+    </div>
+  )
+}
+```
+
+### 3. Integrating the iFrame in Next.js TIMELINE page component
+
+```jsx
+// In your timeline page component
+export default function TimelinePage() {
+  return (
+    <div>
+      {/* Other content */}
+      <div id="terrific-timeline-div" style={{ width: '100%', height: '300px' }}>
+        <iframe 
+          id="terrific-timeline-iframe"
+          src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=false"
+          style={{ width: '100%', height: '100%', border: 'none' }}
+          title="Timeline Display"
+        />
+      </div>
+      {/* Other content */}
+    </div>
+  )
+}
+```
+
+### 4. Mobile-Specific Considerations
+
+When implementing for mobile applications:
+- Ensure responsive layout by using relative dimensions (percentages)
+- Consider adjusting the `number-of-items` parameter for smaller screens
+- Test touch interactions within the iframe on mobile devices
+- Use CSS media queries to adjust iframe height based on device width
+
 ## Important Notes
 
-- **Temporary URLs**: The current URLs for both the JavaScript file and iframe source are temporary for testing purposes.
-- **URL Updates**: You will need to update these URLs with the final production URLs when provided.
-- **No Additional Configuration**: Once the correct URLs are in place, the integration should work without further 
+- **No Additional Configuration**: Once the correct URLs are in place, the integration should work completely 
 - **WIP**: we are still working on fine tunning the experience. This guidance provided to you to see how integration should work.
-configuration.
 
 ## Additional Notes
 - timeline in the example is taken from the [store provided to your content editors from our staging environment](https://terrific-live-polls.web.app/timeline/display?id=pegQgyJj2m8oeGqczIWx)
