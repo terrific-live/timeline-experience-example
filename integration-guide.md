@@ -25,7 +25,7 @@ sequenceDiagram
 Add our JavaScript file by including this script tag in the `<head>` section of your HTML:
 
 ```html
-<script async src="https://storage.googleapis.com/terrific-deploy.appspot.com/temp/integration-script.js"></script>
+<script async src="https://terrific.live/timeline.js"></script>
 ```
 
 ### 2. integrate the following Iframe code to your HOME page
@@ -35,7 +35,7 @@ Add a the following html code to your HOME PAGE where you want the iframe to app
 <!-- Terrific Timeline Day Page Integration start -->
         <div id="terrific-timeline-div">
             <iframe id="terrific-timeline-iframe"
-            src="https://terrific-staging-polls.web.app/timeline/carrousel?id=5VKPd0aAyy98dI5j6o4Z&number-of-items=4&is-redirect=true"
+            src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=true"
             style="width: 100%; height: 100%; border: none;"
             title="Timeline Display"></iframe>
         </div>
@@ -50,7 +50,7 @@ Add a the following html code to your DAILY TIMELINE PAGE where you want the ifr
 <!-- Terrific Timeline Day Page Integration start -->
         <div id="terrific-timeline-div">
             <iframe id="terrific-timeline-iframe"
-            src="https://terrific-staging-polls.web.app/timeline/carrousel?id=5VKPd0aAyy98dI5j6o4Z&number-of-items=4&is-redirect=false"
+            src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=false"
             style="width: 100%; height: 100%; border: none;"
             title="Timeline Display"></iframe>
         </div>
@@ -66,7 +66,7 @@ Add a the following html code to your DAILY TIMELINE PAGE where you want the ifr
 configuration.
 
 ## Additional Notes
-- timeline in the example is taken from the [store provided to your content editors from our staging environment](https://staging.terrific.live/reshet13/manage/assets-library?timelineId=5VKPd0aAyy98dI5j6o4Z)
+- timeline in the example is taken from the [store provided to your content editors from our staging environment](https://terrific-live-polls.web.app/timeline/display?id=pegQgyJj2m8oeGqczIWx)
 - redirect link of the home page carousel click is taken from the timeline settings on our platform, which agreed to be populated by your content editors. We will always take the last one as the one to use in the redirect link.
 
 ## Troubleshooting
