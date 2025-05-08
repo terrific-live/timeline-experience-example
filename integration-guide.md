@@ -146,7 +146,7 @@ When implementing for mobile applications:
 - **WIP**: we are still working on fine tunning the experience. This guidance provided to you to see how integration should work.
 
 ## Additional Notes
-- timeline in the example is taken from the [store provided to your content editors from our staging environment](https://terrific-live-polls.web.app/timeline/display?id=pegQgyJj2m8oeGqczIWx)
+- timeline in the example is taken from the [store provided to your content editors from our live environment](https://terrific.live/reshet/manage/manage-timelines)
 - redirect link of the home page carousel click is taken from the timeline settings on our platform, which agreed to be populated by your content editors. We will always take the last one as the one to use in the redirect link.
 
 ## Troubleshooting
