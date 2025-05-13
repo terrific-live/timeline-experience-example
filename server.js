@@ -21,6 +21,9 @@ const requestHandler = (req, res) => {
   if (filePath === './daily-timeline') {
     filePath = './src/html/timeline-day-example.html';
   }
+  if (filePath === './devs') {
+    filePath = './src/html/devs.html';
+  }
 
   // Get the file extension
   const extname = path.extname(filePath);
