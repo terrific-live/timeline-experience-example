@@ -24,6 +24,12 @@ const requestHandler = (req, res) => {
   if (filePath === './devs') {
     filePath = './src/html/devs.html';
   }
+  if (filePath === './staging') {
+    filePath = './src/html/staging-home.html';
+  }
+  if (filePath === './staging-item') {
+    filePath = './src/html/staging-item.html';
+  }
 
   // Get the file extension
   const extname = path.extname(filePath);
