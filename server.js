@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-const HTTP_PORT = process.env.PORT || 3000;
+const HTTP_PORT = process.env.PORT || 3005;
 
 
 // Common request handler for both HTTP and HTTPS
@@ -29,6 +29,12 @@ const requestHandler = (req, res) => {
   }
   if (filePath === './staging-item') {
     filePath = './src/html/staging-item.html';
+  }
+  if (filePath === './localhost') {
+    filePath = './src/html/localhost-home.html';
+  }
+  if (filePath === './localhost-item') {
+    filePath = './src/html/localhost-item.html';
   }
 
   // Get the file extension
