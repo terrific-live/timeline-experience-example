@@ -97,7 +97,7 @@ const httpServer = http.createServer(requestHandler);
 httpServer.setTimeout(0); 
 
 // Start both servers
-httpServer.listen(HTTP_PORT, () => {
+httpServer.listen(HTTP_PORT, '0.0.0.0', () => {
   console.log(`HTTPS Server running at http://localhost:${HTTP_PORT}/`);
 });
 
