@@ -1,4 +1,4 @@
-# Reshet13 <> Terrific Timeline: Integration Guide
+# Terrific Timeline: Integration Guide
 
 This document explains how to integrate the terrific timeline iframe into your website.
 
