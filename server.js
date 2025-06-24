@@ -21,6 +21,9 @@ const requestHandler = (req, res) => {
   if (filePath === './daily-timeline') {
     filePath = './src/html/timeline-day-example.html';
   }
+  if (filePath === './daily-timeline-new-domain') {
+    filePath = './src/html/timeline-new-domain.html';
+  }
   if (filePath === './devs') {
     filePath = './src/html/devs.html';
   }
@@ -35,6 +38,20 @@ const requestHandler = (req, res) => {
   }
   if (filePath === './localhost-item') {
     filePath = './src/html/localhost-item.html';
+  }
+  if (filePath === './video-slider') {
+    filePath = './src/html/video-slider-demo.html';
+  }
+  if (filePath === './video-slider-local') {
+    filePath = './src/html/video-slider-local.html';
+  }
+  if (filePath === './timeline.js') {
+    filePath = './src/html/timeline.js';
+  }
+
+  // Serve node_modules for local dependencies
+  if (filePath.startsWith('./node_modules/')) {
+    // Keep the path as is for node_modules
   }
 
   // Get the file extension

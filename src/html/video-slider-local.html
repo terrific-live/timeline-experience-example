@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Performance Video Slider Demo (Local Dependencies)</title>
+    <!-- For production, these would be bundled with webpack/vite/etc -->
+    <script src="/node_modules/react/umd/react.development.js"></script>
+    <script src="/node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="/node_modules/embla-carousel/embla-carousel.umd.js"></script>
+    <script src="/node_modules/embla-carousel-react/embla-carousel-react.umd.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .video-slider-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .embla {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .embla__container {
+            display: flex;
+            height: 100%;
+        }
+
+        .embla__slide {
+            flex: 0 0 100%;
+            min-width: 0;
+            position: relative;
+            height: 100%;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-element {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 20px solid #fff;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 4px;
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .video-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .video-description {
+            font-size: 14px;
+            opacity: 0.9;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            transition: background 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .sound-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .slide-indicator {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 20;
+        }
+
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transition: background 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background: #fff;
+        }
+
+        .performance-stats {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-family: monospace;
+            z-index: 30;
+        }
+
+        @media (max-width: 768px) {
+            .video-overlay {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+            }
+            
+            .controls {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .sound-indicator {
+                top: 10px;
+                left: 10px;
+            }
+
+            .performance-stats {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback } = React;
+        const useEmblaCarousel = EmblaCarouselReact;
+
+        // Sample video data - replace with your actual video URLs
+        const videoData = [
+            {
+                id: 1,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                title: "Big Buck Bunny",
+                description: "A large and lovable rabbit deals with three tiny bullies"
+            },
+            {
+                id: 2,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                title: "Elephants Dream",
+                description: "The first Blender Open Movie from 2006"
+            },
+            {
+                id: 3,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                title: "For Bigger Blazes",
+                description: "A short film about fire and adventure"
+            },
+            {
+                id: 4,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                title: "For Bigger Escapes",
+                description: "An epic journey through stunning landscapes"
+            },
+            {
+                id: 5,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                title: "For Bigger Fun",
+                description: "Fun adventures and exciting moments"
+            },
+            {
+                id: 6,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+                title: "For Bigger Joyrides",
+                description: "High-speed thrills and excitement"
+            },
+            {
+                id: 7,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+                title: "For Bigger Meltdowns",
+                description: "Intense action and dramatic moments"
+            },
+            {
+                id: 8,
+                src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+                title: "Sintel",
+                description: "A lonely young woman finds a baby dragon"
+            }
+        ];
+
+        const VideoSlide = ({ video, isActive, isAdjacent, onVideoLoad, onVideoError, userHasInteracted }) => {
+            const videoRef = useRef(null);
+            const [isLoading, setIsLoading] = useState(true);
+            const [hasError, setHasError] = useState(false);
+            const [isPlaying, setIsPlaying] = useState(false);
+
+            useEffect(() => {
+                const videoElement = videoRef.current;
+                if (!videoElement) return;
+
+                const handleLoadedData = () => {
+                    setIsLoading(false);
+                    onVideoLoad(video.id);
+                };
+
+                const handleError = () => {
+                    setIsLoading(false);
+                    setHasError(true);
+                    onVideoError(video.id);
+                };
+
+                const handlePlay = () => setIsPlaying(true);
+                const handlePause = () => setIsPlaying(false);
+
+                videoElement.addEventListener('loadeddata', handleLoadedData);
+                videoElement.addEventListener('error', handleError);
+                videoElement.addEventListener('play', handlePlay);
+                videoElement.addEventListener('pause', handlePause);
+
+                return () => {
+                    videoElement.removeEventListener('loadeddata', handleLoadedData);
+                    videoElement.removeEventListener('error', handleError);
+                    videoElement.removeEventListener('play', handlePlay);
+                    videoElement.removeEventListener('pause', handlePause);
+                };
+            }, [video.id, onVideoLoad, onVideoError]);
+
+            useEffect(() => {
+                const videoElement = videoRef.current;
+                if (!videoElement || hasError) return;
+
+                if (isActive && userHasInteracted) {
+                    // Autoplay with sound when active and user has interacted
+                    videoElement.muted = false;
+                    videoElement.play().catch(console.error);
+                } else if (isActive) {
+                    // Autoplay muted if no user interaction yet
+                    videoElement.muted = true;
+                    videoElement.play().catch(console.error);
+                } else {
+                    // Pause when not active
+                    videoElement.pause();
+                }
+            }, [isActive, userHasInteracted, hasError]);
+
+            // Only render video element if it's active or adjacent (DOM optimization)
+            if (!isActive && !isAdjacent) {
+                return (
+                    <div className="video-container">
+                        <div className="video-placeholder">
+                            <div className="play-icon"></div>
+                        </div>
+                        <div className="video-overlay">
+                            <div className="video-title">{video.title}</div>
+                            <div className="video-description">{video.description}</div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="video-container">
+                    {isLoading && <div className="loading-spinner"></div>}
+                    {hasError ? (
+                        <div className="video-placeholder">
+                            <div style={{ color: '#ff6b6b', fontSize: '14px' }}>Failed to load</div>
+                        </div>
+                    ) : (
+                        <video
+                            ref={videoRef}
+                            className="video-element"
+                            src={video.src}
+                            loop
+                            playsInline
+                            preload={isActive ? "auto" : "metadata"}
+                            style={{ opacity: isLoading ? 0 : 1 }}
+                        />
+                    )}
+                    <div className="video-overlay">
+                        <div className="video-title">{video.title}</div>
+                        <div className="video-description">{video.description}</div>
+                    </div>
+                    {isActive && isPlaying && (
+                        <div className="sound-indicator">
+                            {userHasInteracted ? "🔊 Sound On" : "🔇 Muted"}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const VideoSlider = () => {
+            const [emblaRef, emblaApi] = useEmblaCarousel({ 
+                loop: true,
+                skipSnaps: false,
+                dragFree: false
+            });
+            const [selectedIndex, setSelectedIndex] = useState(0);
+            const [loadedVideos, setLoadedVideos] = useState(new Set());
+            const [userHasInteracted, setUserHasInteracted] = useState(false);
+            const [activeVideos, setActiveVideos] = useState(new Set([0, 1, 2])); // Track which videos are in DOM
+            const [performanceStats, setPerformanceStats] = useState({ videoElements: 0, memoryUsage: 0 });
+
+            const onSelect = useCallback(() => {
+                if (!emblaApi) return;
+                const index = emblaApi.selectedScrollSnap();
+                setSelectedIndex(index);
+                
+                // Mark user interaction on slide change
+                if (!userHasInteracted) {
+                    setUserHasInteracted(true);
+                }
+
+                // Update active videos (current + adjacent for DOM optimization)
+                const newActiveVideos = new Set();
+                const prevIndex = index === 0 ? videoData.length - 1 : index - 1;
+                const nextIndex = index === videoData.length - 1 ? 0 : index + 1;
+                
+                newActiveVideos.add(prevIndex);
+                newActiveVideos.add(index);
+                newActiveVideos.add(nextIndex);
+                
+                setActiveVideos(newActiveVideos);
+
+                // Update performance stats
+                const videoElements = document.querySelectorAll('video').length;
+                const memoryUsage = performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1024 / 1024) : 0;
+                setPerformanceStats({ videoElements, memoryUsage });
+            }, [emblaApi, userHasInteracted]);
+
+            useEffect(() => {
+                if (!emblaApi) return;
+                onSelect();
+                emblaApi.on('select', onSelect);
+                return () => emblaApi.off('select', onSelect);
+            }, [emblaApi, onSelect]);
+
+            const handleVideoLoad = useCallback((videoId) => {
+                setLoadedVideos(prev => new Set([...prev, videoId]));
+            }, []);
+
+            const handleVideoError = useCallback((videoId) => {
+                console.error(`Failed to load video ${videoId}`);
+            }, []);
+
+            const scrollTo = useCallback((index) => {
+                if (emblaApi) {
+                    emblaApi.scrollTo(index);
+                    setUserHasInteracted(true);
+                }
+            }, [emblaApi]);
+
+            const scrollPrev = useCallback(() => {
+                if (emblaApi) {
+                    emblaApi.scrollPrev();
+                    setUserHasInteracted(true);
+                }
+            }, [emblaApi]);
+
+            const scrollNext = useCallback(() => {
+                if (emblaApi) {
+                    emblaApi.scrollNext();
+                    setUserHasInteracted(true);
+                }
+            }, [emblaApi]);
+
+            // Handle keyboard navigation
+            useEffect(() => {
+                const handleKeyDown = (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        scrollPrev();
+                    } else if (e.key === 'ArrowRight') {
+                        scrollNext();
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyDown);
+                return () => window.removeEventListener('keydown', handleKeyDown);
+            }, [scrollPrev, scrollNext]);
+
+            return (
+                <div className="video-slider-container">
+                    <div className="embla" ref={emblaRef}>
+                        <div className="embla__container">
+                            {videoData.map((video, index) => (
+                                <div key={video.id} className="embla__slide">
+                                    <VideoSlide
+                                        video={video}
+                                        isActive={index === selectedIndex}
+                                        isAdjacent={activeVideos.has(index)}
+                                        onVideoLoad={handleVideoLoad}
+                                        onVideoError={handleVideoError}
+                                        userHasInteracted={userHasInteracted}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="controls">
+                        <button className="control-btn" onClick={scrollPrev}>
+                            ← Prev
+                        </button>
+                        <button className="control-btn" onClick={scrollNext}>
+                            Next →
+                        </button>
+                    </div>
+
+                    <div className="slide-indicator">
+                        {videoData.map((_, index) => (
+                            <button
+                                key={index}
+                                className={`indicator-dot ${index === selectedIndex ? 'active' : ''}`}
+                                onClick={() => scrollTo(index)}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="performance-stats">
+                        Video Elements: {performanceStats.videoElements}/3<br/>
+                        {performanceStats.memoryUsage > 0 && `Memory: ${performanceStats.memoryUsage}MB`}
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            return <VideoSlider />;
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html> 

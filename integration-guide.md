@@ -35,7 +35,7 @@ Add a the following html code to your HOME PAGE where you want the iframe to app
 <!-- Terrific Timeline Day Page Integration start -->
         <div id="terrific-timeline-div">
             <iframe id="terrific-timeline-iframe"
-            src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=true"
+            src="https://polls.terrific.live/timeline/carrousel?id=<timeline-id>&number-of-items=4&is-redirect=true"
             style="width: 100%; height: 100%; border: none;"
             title="Timeline Display"></iframe>
         </div>
@@ -50,7 +50,7 @@ Add a the following html code to your DAILY TIMELINE PAGE where you want the ifr
 <!-- Terrific Timeline Day Page Integration start -->
         <div id="terrific-timeline-div">
             <iframe id="terrific-timeline-iframe"
-            src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=false"
+            src="https://polls.terrific.live/timeline/carrousel?id=<timeline-id>&number-of-items=4&is-redirect=false"
             style="width: 100%; height: 100%; border: none;"
             title="Timeline Display"></iframe>
         </div>
@@ -99,7 +99,7 @@ export default function HomePage() {
       <div id="terrific-timeline-div" style={{ width: '100%', height: '300px' }}>
         <iframe 
           id="terrific-timeline-iframe"
-          src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=true"
+          src="https://polls.terrific.live/timeline/carrousel?id=<timeline-id>&number-of-items=4&is-redirect=true"
           style={{ width: '100%', height: '100%', border: 'none' }}
           title="Timeline Display"
         />
@@ -121,7 +121,7 @@ export default function TimelinePage() {
       <div id="terrific-timeline-div" style={{ width: '100%', height: '300px' }}>
         <iframe 
           id="terrific-timeline-iframe"
-          src="https://terrific-live-polls.web.app/timeline/carrousel?id=pegQgyJj2m8oeGqczIWx&number-of-items=4&is-redirect=false"
+          src="https://polls.terrific.live/timeline/carrousel?id=<timeline-id>&number-of-items=4&is-redirect=false"
           style={{ width: '100%', height: '100%', border: 'none' }}
           title="Timeline Display"
         />
@@ -143,11 +143,15 @@ When implementing for mobile applications:
 ## Important Notes
 
 - **No Additional Configuration**: Once the correct URLs are in place, the integration should work completely 
-- **WIP**: we are still working on fine tunning the experience. This guidance provided to you to see how integration should work.
+- we support start-time qa parameter for both the carousel and the timeline. by adding start-time=<yyyymmddhh>
+example: &start-time=202506241105
+for the carousel - it will present the <number-of-items> coming after the closest asset to the mentioned <start-time>.
+fot the timeline scroll experience - it will open the closest item to the mentioned <start-time>.
+if no hour supported (i.e &start-time=20250624), it will present the latest item that day and will act as if it was yyyymmdd2359 (02506242359 in the example)
 
 ## Additional Notes
-- timeline in the example is taken from the [store provided to your content editors from our live environment](https://terrific.live/reshet/manage/manage-timelines)
-- redirect link of the home page carousel click is taken from the timeline settings on our platform, which agreed to be populated by your content editors. We will always take the last one as the one to use in the redirect link.
+- timeline-id should be taken from your terrific admin panel under timelines
+- redirect link of the home page carousel click is taken from the timeline settings on our platform, which should be populated by your content editors. We will always take the last one as the one to use in the redirect link.
 
 ## Troubleshooting
 
