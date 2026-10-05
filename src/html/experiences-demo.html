@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3f0e9">
+    <meta name="description" content="Preview Terrific Live Session, Carousel, and Live Forum experiences for one store.">
+    <title>Terrific — Experience Room</title>
+
+    <style>
+      :root {
+        --ink: #17211d;
+        --muted: #66716b;
+        --paper: #f3f0e9;
+        --panel: #fffdf8;
+        --line: #c9cec9;
+        --acid: #d9ff57;
+        --coral: #ff735e;
+        --blue: #2769ff;
+        --shadow: 0 18px 45px rgba(23, 33, 29, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          linear-gradient(rgba(23, 33, 29, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(23, 33, 29, 0.035) 1px, transparent 1px),
+          var(--paper);
+        background-size: 32px 32px;
+        font-family: Avenir, "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1440px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .masthead {
+        position: relative;
+        min-height: 380px;
+        padding: 42px 0 76px;
+        overflow: hidden;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .masthead::after {
+        position: absolute;
+        right: -80px;
+        bottom: -180px;
+        width: 520px;
+        height: 520px;
+        border: 80px solid var(--coral);
+        border-radius: 50%;
+        content: "";
+        opacity: 0.86;
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 46px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--blue);
+        box-shadow: 0 0 0 5px rgba(39, 105, 255, 0.12);
+        content: "";
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        position: relative;
+        z-index: 1;
+        max-width: 880px;
+        margin-bottom: 28px;
+        font-family: Baskerville, "Iowan Old Style", Georgia, serif;
+        font-size: clamp(58px, 9vw, 132px);
+        font-weight: 500;
+        letter-spacing: -0.065em;
+        line-height: 0.78;
+      }
+
+      h1 em {
+        display: block;
+        margin-left: 0.72em;
+        color: var(--blue);
+        font-weight: 400;
+      }
+
+      .intro {
+        position: relative;
+        z-index: 1;
+        max-width: 610px;
+        margin: 0;
+        font-size: clamp(17px, 2vw, 22px);
+        line-height: 1.55;
+      }
+
+      .config-wrap {
+        position: relative;
+        z-index: 2;
+        margin-top: -34px;
+      }
+
+      .config {
+        display: grid;
+        grid-template-columns: minmax(180px, 1.25fr) repeat(3, minmax(150px, 1fr)) auto;
+        gap: 14px;
+        align-items: end;
+        padding: 22px;
+        background: var(--ink);
+        color: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 8px;
+        color: #bac2bd;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .field input {
+        width: 100%;
+        min-height: 46px;
+        padding: 0 13px;
+        border: 1px solid #53605a;
+        border-radius: 0;
+        outline: none;
+        background: #202c27;
+        color: #fff;
+        transition: border-color 160ms ease, background 160ms ease;
+      }
+
+      .field input:focus {
+        border-color: var(--acid);
+        background: #26352e;
+      }
+
+      .field input::placeholder {
+        color: #7f8b84;
+      }
+
+      .apply-button {
+        min-height: 46px;
+        padding: 0 22px;
+        border: 0;
+        background: var(--acid);
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .apply-button:hover {
+        box-shadow: 5px 5px 0 var(--blue);
+        transform: translate(-2px, -2px);
+      }
+
+      .apply-button:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 3px;
+      }
+
+      .store-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 30px;
+        align-items: center;
+        padding: 22px 0 48px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .store-strip strong {
+        color: var(--ink);
+      }
+
+      .store-id {
+        padding: 7px 10px;
+        background: rgba(255, 255, 255, 0.66);
+        border: 1px solid var(--line);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        overflow-wrap: anywhere;
+      }
+
+      .experience-list {
+        padding-bottom: 90px;
+      }
+
+      .experience {
+        display: grid;
+        grid-template-columns: minmax(210px, 0.32fr) minmax(0, 1fr);
+        gap: clamp(22px, 4vw, 66px);
+        padding: 52px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .experience:first-child {
+        border-top: 0;
+      }
+
+      .experience-meta {
+        position: sticky;
+        top: 28px;
+        align-self: start;
+      }
+
+      .index {
+        display: inline-grid;
+        width: 38px;
+        height: 38px;
+        margin-bottom: 20px;
+        place-items: center;
+        border: 1px solid currentColor;
+        border-radius: 50%;
+        color: var(--blue);
+        font-family: Baskerville, Georgia, serif;
+        font-size: 19px;
+        font-style: italic;
+      }
+
+      h2 {
+        margin-bottom: 14px;
+        font-family: Baskerville, "Iowan Old Style", Georgia, serif;
+        font-size: clamp(34px, 4vw, 56px);
+        font-weight: 500;
+        letter-spacing: -0.045em;
+        line-height: 0.98;
+      }
+
+      .experience-meta p {
+        max-width: 310px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .id-badge {
+        display: inline-block;
+        max-width: 100%;
+        padding: 7px 9px;
+        background: var(--acid);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 11px;
+        overflow-wrap: anywhere;
+      }
+
+      .stage {
+        position: relative;
+        min-width: 0;
+        min-height: 520px;
+        overflow: hidden;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .stage::before {
+        display: block;
+        height: 7px;
+        background: var(--blue);
+        content: "";
+      }
+
+      .experience:nth-child(2) .stage::before {
+        background: var(--coral);
+      }
+
+      .experience:nth-child(3) .stage::before {
+        background: var(--acid);
+      }
+
+      .embed-mount {
+        width: 100%;
+        min-height: 512px;
+      }
+
+      .empty-state {
+        display: grid;
+        min-height: 512px;
+        padding: 42px;
+        place-content: center;
+        text-align: center;
+      }
+
+      .empty-state span {
+        display: block;
+        margin-bottom: 12px;
+        font-family: Baskerville, Georgia, serif;
+        font-size: 32px;
+        font-style: italic;
+      }
+
+      .empty-state code {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 5px 8px;
+        background: #e9e7df;
+        color: var(--blue);
+      }
+
+      .noscript {
+        margin: 20px auto;
+        padding: 18px;
+        background: #fff1ee;
+        border-left: 5px solid var(--coral);
+      }
+
+      @media (max-width: 1060px) {
+        .config {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .apply-button {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .shell {
+          width: min(100% - 24px, 1440px);
+        }
+
+        .masthead {
+          min-height: 330px;
+          padding-top: 28px;
+        }
+
+        .masthead::after {
+          right: -160px;
+          opacity: 0.36;
+        }
+
+        .eyebrow {
+          margin-bottom: 38px;
+        }
+
+        h1 {
+          font-size: clamp(54px, 19vw, 90px);
+        }
+
+        h1 em {
+          margin-left: 0.36em;
+        }
+
+        .config {
+          grid-template-columns: 1fr;
+          padding: 18px;
+        }
+
+        .apply-button {
+          grid-column: auto;
+        }
+
+        .experience {
+          grid-template-columns: 1fr;
+          padding: 38px 0;
+        }
+
+        .experience-meta {
+          position: static;
+        }
+
+        .stage,
+        .embed-mount,
+        .empty-state {
+          min-height: 460px;
+        }
+
+        .empty-state {
+          padding: 28px 20px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="shell">
+        <p class="eyebrow">Terrific integration lab</p>
+        <h1>Three ways to <em>go live.</em></h1>
+        <p class="intro">
+          A single storefront, shown through Live Session, Carousel, and Live Forum.
+          Configure the identifiers below; the URL becomes a reusable demo link.
+        </p>
+      </div>
+    </header>
+
+    <main class="shell">
+      <div class="config-wrap">
+        <form class="config" id="demo-config">
+          <div class="field">
+            <label for="store-id">Store ID</label>
+            <input id="store-id" name="storeId" autocomplete="off" required>
+          </div>
+          <div class="field">
+            <label for="live-session-id">Live Session embed ID</label>
+            <input id="live-session-id" name="liveSessionId" autocomplete="off" placeholder="Required to render">
+          </div>
+          <div class="field">
+            <label for="carousel-id">Carousel embed ID</label>
+            <input id="carousel-id" name="carouselId" autocomplete="off" placeholder="Required to render">
+          </div>
+          <div class="field">
+            <label for="live-forum-id">Live Forum space ID</label>
+            <input id="live-forum-id" name="liveForumId" autocomplete="off" placeholder="home">
+          </div>
+          <button class="apply-button" type="submit">Load demo</button>
+        </form>
+      </div>
+
+      <div class="store-strip" aria-live="polite">
+        <span><strong>Active store</strong></span>
+        <span class="store-id" id="active-store-id"></span>
+        <span id="environment-label"></span>
+      </div>
+
+      <noscript>
+        <p class="noscript">JavaScript is required to configure and load the Terrific experiences.</p>
+      </noscript>
+
+      <div class="experience-list">
+        <section class="experience" aria-labelledby="live-session-title">
+          <div class="experience-meta">
+            <span class="index">01</span>
+            <h2 id="live-session-title">Live Session</h2>
+            <p>Real-time video commerce, interaction, and conversion in one embedded experience.</p>
+            <span class="id-badge" id="live-session-badge"></span>
+          </div>
+          <div class="stage" id="live-session-stage"></div>
+        </section>
+
+        <section class="experience" aria-labelledby="carousel-title">
+          <div class="experience-meta">
+            <span class="index">02</span>
+            <h2 id="carousel-title">Carousel</h2>
+            <p>Shoppable stories and highlights, designed to keep discovery moving.</p>
+            <span class="id-badge" id="carousel-badge"></span>
+          </div>
+          <div class="stage" id="carousel-stage"></div>
+        </section>
+
+        <section class="experience" aria-labelledby="live-forum-title">
+          <div class="experience-meta">
+            <span class="index">03</span>
+            <h2 id="live-forum-title">Live Forum</h2>
+            <p>Editorial updates and audience participation in a living conversation.</p>
+            <span class="id-badge" id="live-forum-badge"></span>
+          </div>
+          <div class="stage" id="live-forum-stage"></div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      (() => {
+        const DEFAULT_STORE_ID = 'q0GCXUXuQ4MhKPyQo4Ww';
+        const params = new URLSearchParams(window.location.search);
+        const readParam = (shortName, longName, fallback = '') =>
+          (params.get(shortName) || params.get(longName) || fallback).trim();
+        const readEmbeddingParam = (shortName, longName, fallback = '') => {
+          const value = readParam(shortName, longName, fallback);
+          const isPlaceholder = /^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+_ID$/.test(value);
+          return isPlaceholder ? '' : value;
+        };
+
+        const config = {
+          storeId: readParam('storeId', 'store', DEFAULT_STORE_ID),
+          liveSessionId: readEmbeddingParam('liveSessionId', 'liveSessionEmbeddingId'),
+          carouselId: readEmbeddingParam('carouselId', 'carouselEmbeddingId'),
+          liveForumId: readEmbeddingParam('liveForumId', 'liveForumEmbeddingId', 'home'),
+          env: readParam('env', 'environment', 'live'),
+        };
+
+        const form = document.getElementById('demo-config');
+        const setInput = (name, value) => {
+          const input = form.elements.namedItem(name);
+          if (input) input.value = value;
+        };
+
+        setInput('storeId', config.storeId);
+        setInput('liveSessionId', config.liveSessionId);
+        setInput('carouselId', config.carouselId);
+        setInput('liveForumId', config.liveForumId);
+
+        document.getElementById('active-store-id').textContent = config.storeId;
+        document.getElementById('environment-label').textContent =
+          config.env === 'live' ? 'Production SDK' : `${config.env} SDK`;
+
+        const addEmptyState = (stageId, parameterName) => {
+          const state = document.createElement('div');
+          state.className = 'empty-state';
+
+          const message = document.createElement('div');
+          const heading = document.createElement('span');
+          heading.textContent = 'Ready when you are.';
+          const instruction = document.createElement('p');
+          instruction.textContent = 'Add this experience’s embedding ID above or in the URL:';
+          const parameter = document.createElement('code');
+          parameter.textContent = parameterName;
+
+          message.append(heading, instruction, parameter);
+          state.appendChild(message);
+          document.getElementById(stageId).appendChild(state);
+        };
+
+        const addEmbedding = (stageId, badgeId, embeddingId, embedType, parameterName) => {
+          const badge = document.getElementById(badgeId);
+          badge.textContent = embeddingId || 'ID not provided';
+
+          if (!embeddingId) {
+            addEmptyState(stageId, parameterName);
+            return;
+          }
+
+          const mount = document.createElement('div');
+          mount.className = 'embed-mount';
+          mount.dataset.source = 'terrific';
+          mount.setAttribute('embedding-id', embeddingId);
+          mount.setAttribute('embed-type', embedType);
+          if (embedType === 'timeline') mount.setAttribute('num-of-items', '5');
+          document.getElementById(stageId).appendChild(mount);
+        };
+
+        addEmbedding(
+          'live-session-stage',
+          'live-session-badge',
+          config.liveSessionId,
+          'liveSession',
+          'liveSessionId'
+        );
+        addEmbedding('carousel-stage', 'carousel-badge', config.carouselId, 'timeline', 'carouselId');
+        addEmbedding(
+          'live-forum-stage',
+          'live-forum-badge',
+          config.liveForumId,
+          'liveForum',
+          'liveForumId'
+        );
+
+        const grantIframePermissions = (root) => {
+          for (const iframe of root.querySelectorAll('iframe')) {
+            const permissions = new Set(
+              (iframe.getAttribute('allow') || '')
+                .split(';')
+                .map((permission) => permission.trim())
+                .filter(Boolean)
+            );
+            permissions.add('autoplay');
+            permissions.add('web-share');
+            iframe.setAttribute('allow', Array.from(permissions).join('; '));
+          }
+        };
+
+        const experienceList = document.querySelector('.experience-list');
+        const iframeObserver = new MutationObserver(() => grantIframePermissions(experienceList));
+        iframeObserver.observe(experienceList, { childList: true, subtree: true });
+        grantIframePermissions(experienceList);
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const next = new URL(window.location.href);
+          const data = new FormData(form);
+
+          for (const key of ['storeId', 'liveSessionId', 'carouselId', 'liveForumId']) {
+            const value = String(data.get(key) || '').trim();
+            if (value) next.searchParams.set(key, value);
+            else next.searchParams.delete(key);
+          }
+
+          window.location.assign(next.toString());
+        });
+
+        const environmentIsSafe = config.env === 'live' || /^[a-z0-9-]+$/.test(config.env);
+        if (!environmentIsSafe) {
+          console.error('Invalid env parameter.');
+          return;
+        }
+
+        const sdk = document.createElement('script');
+        sdk.src =
+          config.env === 'live'
+            ? 'https://terrific.live/terrific-sdk.js'
+            : `https://${config.env}.web.app/terrific-sdk.js`;
+        sdk.setAttribute('storeId', config.storeId);
+        sdk.async = true;
+        document.head.appendChild(sdk);
+      })();
+    </script>
+  </body>
+</html>
+

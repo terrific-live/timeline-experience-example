@@ -48,6 +48,9 @@ const requestHandler = (req, res) => {
   if (filePath === './timeline.js') {
     filePath = './src/html/timeline.js';
   }
+  if (filePath === './experiences-demo') {
+    filePath = './src/html/experiences-demo.html';
+  }
 
   // Serve node_modules for local dependencies
   if (filePath.startsWith('./node_modules/')) {
