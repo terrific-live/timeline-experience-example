@@ -132,7 +132,7 @@
 
       .config {
         display: grid;
-        grid-template-columns: minmax(180px, 1.25fr) repeat(3, minmax(150px, 1fr)) auto;
+        grid-template-columns: minmax(180px, 1.25fr) repeat(4, minmax(150px, 1fr)) auto;
         gap: 14px;
         align-items: end;
         padding: 22px;
@@ -277,6 +277,26 @@
         font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
         font-size: 11px;
         overflow-wrap: anywhere;
+      }
+
+      .id-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .id-badge[data-label]::before {
+        margin-right: 5px;
+        content: attr(data-label) "/";
+        font-family: Avenir, "Avenir Next", "Segoe UI", sans-serif;
+        font-size: 9px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .id-badge--popup {
+        background: var(--coral);
       }
 
       .stage {
@@ -443,6 +463,10 @@
             <input id="live-session-id" name="liveSessionId" autocomplete="off" placeholder="Required to render">
           </div>
           <div class="field">
+            <label for="live-session-popup-id">Live Session popup embed ID</label>
+            <input id="live-session-popup-id" name="liveSessionPopupId" autocomplete="off" placeholder="Optional popup">
+          </div>
+          <div class="field">
             <label for="carousel-id">Carousel embed ID</label>
             <input id="carousel-id" name="carouselId" autocomplete="off" placeholder="Required to render">
           </div>
@@ -469,8 +493,11 @@
           <div class="experience-meta">
             <span class="index">01</span>
             <h2 id="live-session-title">Live Session</h2>
-            <p>Real-time video commerce, interaction, and conversion in one embedded experience.</p>
-            <span class="id-badge" id="live-session-badge"></span>
+            <p>Real-time video commerce, available inline and as an optional floating popup.</p>
+            <div class="id-badges">
+              <span class="id-badge" id="live-session-badge" data-label="Inline"></span>
+              <span class="id-badge id-badge--popup" id="live-session-popup-badge" data-label="Popup"></span>
+            </div>
           </div>
           <div class="stage" id="live-session-stage"></div>
         </section>
@@ -512,6 +539,10 @@
         const config = {
           storeId: readParam('storeId', 'store', DEFAULT_STORE_ID),
           liveSessionId: readEmbeddingParam('liveSessionId', 'liveSessionEmbeddingId'),
+          liveSessionPopupId: readEmbeddingParam(
+            'liveSessionPopupId',
+            'liveSessionPopupEmbeddingId'
+          ),
           carouselId: readEmbeddingParam('carouselId', 'carouselEmbeddingId'),
           liveForumId: readEmbeddingParam('liveForumId', 'liveForumEmbeddingId', 'home'),
           env: readParam('env', 'environment', 'live'),
@@ -525,6 +556,7 @@
 
         setInput('storeId', config.storeId);
         setInput('liveSessionId', config.liveSessionId);
+        setInput('liveSessionPopupId', config.liveSessionPopupId);
         setInput('carouselId', config.carouselId);
         setInput('liveForumId', config.liveForumId);
 
@@ -574,6 +606,19 @@
           'liveSession',
           'liveSessionId'
         );
+
+        const popupBadge = document.getElementById('live-session-popup-badge');
+        popupBadge.textContent = config.liveSessionPopupId || 'ID not provided';
+
+        if (config.liveSessionPopupId) {
+          const popupMount = document.createElement('div');
+          popupMount.dataset.source = 'terrific';
+          popupMount.setAttribute('embedding-id', config.liveSessionPopupId);
+          popupMount.setAttribute('embed-type', 'liveSession');
+          popupMount.setAttribute('aria-label', 'Live Session popup embed');
+          document.body.appendChild(popupMount);
+        }
+
         addEmbedding('carousel-stage', 'carousel-badge', config.carouselId, 'timeline', 'carouselId');
         addEmbedding(
           'live-forum-stage',
@@ -607,7 +652,13 @@
           const next = new URL(window.location.href);
           const data = new FormData(form);
 
-          for (const key of ['storeId', 'liveSessionId', 'carouselId', 'liveForumId']) {
+          for (const key of [
+            'storeId',
+            'liveSessionId',
+            'liveSessionPopupId',
+            'carouselId',
+            'liveForumId',
+          ]) {
             const value = String(data.get(key) || '').trim();
             if (value) next.searchParams.set(key, value);
             else next.searchParams.delete(key);
@@ -634,4 +685,3 @@
     </script>
   </body>
 </html>
-
